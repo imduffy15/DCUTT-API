@@ -1,7 +1,7 @@
-package api.service;
+package com.dcutt.api.service;
 
-import api.model.Event;
-import api.model.Type;
+import com.dcutt.api.model.Event;
+import com.dcutt.api.model.Type;
 import net.fortuna.ical4j.data.CalendarBuilder;
 import net.fortuna.ical4j.data.ParserException;
 import net.fortuna.ical4j.model.Calendar;
@@ -31,6 +31,9 @@ public class DcuTimetableService {
     private static final String MODULE_DESCRIPTION_KEY = "DESCRIPTION";
     private static final String BASE_URL = "http://ical.dcu.ie/gCal/default.aspx?PoSiCalOra&p1=";
 
+    private static final String LOCATION_SEPARATOR = ":";
+    private static final String MODULE_SEPARATOR = "/";
+
     private CalendarBuilder calendarBuilder;
     private RestTemplate restTemplate;
 
@@ -40,12 +43,12 @@ public class DcuTimetableService {
         this.restTemplate = restTemplate;
     }
 
-    private static String getModuleCode(String data) {
+    private static Set<String> getModuleCode(String data) {
         data = data.replaceAll("\\s+", "");
         Pattern pattern = Pattern.compile("^[^\\[\\(]*");
         Matcher matcher = pattern.matcher(data);
         if (matcher.find()) {
-            return matcher.group(0);
+            return new HashSet<>(Arrays.asList(matcher.group(0).split(MODULE_SEPARATOR)));
         }
         throw new IllegalArgumentException();
     }
@@ -84,9 +87,9 @@ public class DcuTimetableService {
             PropertyList propertyList = ((net.fortuna.ical4j.model.Component) obj).getProperties();
             String moduleDescription = propertyList.getProperty(MODULE_DESCRIPTION_KEY) != null ? StringEscapeUtils.unescapeHtml(propertyList.getProperty(MODULE_DESCRIPTION_KEY).getValue()) : "";
             String summaryData = propertyList.getProperty(SUMMARY_KEY).getValue();
-            String moduleCode = getModuleCode(summaryData);
+            Set<String> moduleCodes = getModuleCode(summaryData);
             Type eventType = getEventType(summaryData);
-            List<String> locations = Arrays.asList(propertyList.getProperty(LOCATION_KEY).getValue().split(":"));
+            Set<String> locations = new HashSet<>(Arrays.asList(propertyList.getProperty(LOCATION_KEY).getValue().split(LOCATION_SEPARATOR)));
 
             DateTime startDateTime = new DateTime(propertyList.getProperty(START_DATE_KEY).getValue());
             DateTime endDateTime = new DateTime(propertyList.getProperty(END_DATE_KEY).getValue());
@@ -97,7 +100,7 @@ public class DcuTimetableService {
 
             sortedEvents.add(new Event(
                     courseCode,
-                    moduleCode,
+                    moduleCodes,
                     moduleDescription,
                     startDateTime.getTime(),
                     endDateTime.getTime(),

@@ -1,4 +1,4 @@
-package api;
+package com.dcutt.api;
 
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.SpringApplicationConfiguration;

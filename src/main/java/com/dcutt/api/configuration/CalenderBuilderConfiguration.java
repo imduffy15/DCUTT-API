@@ -1,4 +1,4 @@
-package api.configuration;
+package com.dcutt.api.configuration;
 
 import net.fortuna.ical4j.data.CalendarBuilder;
 import org.springframework.context.annotation.Bean;

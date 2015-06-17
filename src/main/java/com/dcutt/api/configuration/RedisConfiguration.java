@@ -1,6 +1,6 @@
-package api.configuration;
+package com.dcutt.api.configuration;
 
-import api.model.Event;
+import com.dcutt.api.model.Event;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;

@@ -1,4 +1,4 @@
-package api.model;
+package com.dcutt.api.model;
 
 import java.util.HashMap;
 import java.util.Map;

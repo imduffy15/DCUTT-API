@@ -1,6 +1,6 @@
-package api.web;
+package com.dcutt.api.web;
 
-import api.service.EventService;
+import com.dcutt.api.service.EventService;
 import net.fortuna.ical4j.data.ParserException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

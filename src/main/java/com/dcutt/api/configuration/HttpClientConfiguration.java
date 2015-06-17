@@ -1,4 +1,4 @@
-package api.configuration;
+package com.dcutt.api.configuration;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
