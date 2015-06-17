@@ -12,8 +12,7 @@ import redis.embedded.RedisServer;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.SortedMap;
 import java.util.SortedSet;
 import java.util.TreeMap;
 
@@ -39,8 +38,8 @@ public class RedisConfiguration {
     }
 
     @Bean
-    RedisTemplate<String, Map<Long, SortedSet<Event>>> redisTemplate() {
-        final RedisTemplate<String, Map<Long, SortedSet<Event>>> template = new RedisTemplate<>();
+    RedisTemplate<String, SortedMap<Long, SortedSet<Event>>> redisTemplate() {
+        final RedisTemplate<String, SortedMap<Long, SortedSet<Event>>> template = new RedisTemplate<>();
         template.setConnectionFactory(jedisConnectionFactory());
         template.setKeySerializer(new StringRedisSerializer());
         template.setHashValueSerializer(new JacksonJsonRedisSerializer<>(TreeMap.class));

@@ -7,7 +7,8 @@ public enum Type {
     LECTURE('L'),
     PRACTICAL('P'),
     TUTORIAL('T'),
-    SEMINAR('S');
+    SEMINAR('S'),
+    UNKNOWN('U');
 
     private static Map<Character, Type> characterTypeMap = new HashMap<>();
 

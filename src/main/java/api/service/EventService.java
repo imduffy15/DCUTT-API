@@ -1,7 +1,6 @@
 package api.service;
 
 import api.model.Event;
-import com.sun.deploy.util.OrderedHashSet;
 import net.fortuna.ical4j.data.ParserException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,28 +10,28 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.text.ParseException;
-import java.util.*;
+import java.util.SortedMap;
+import java.util.SortedSet;
 import java.util.concurrent.TimeUnit;
 
 @Service
 public class EventService {
 
     private DcuTimetableService dcuTimetableService;
-    private RedisTemplate<String, Map<Long, SortedSet<Event>>> template;
+    private RedisTemplate<String, SortedMap<Long, SortedSet<Event>>> template;
 
-    @Value("${redis.entries.ttl}")
-    private Integer redisEntriesTTL;
+    @Value("${redis.entry.ttl}")
+    private Integer redisEntryTTL;
 
     @Autowired
-    public EventService(DcuTimetableService dcuTimetableService, RedisTemplate<String, Map<Long, SortedSet<Event>>> template) {
+    public EventService(DcuTimetableService dcuTimetableService, RedisTemplate<String, SortedMap<Long, SortedSet<Event>>> template) {
         this.dcuTimetableService = dcuTimetableService;
         this.template = template;
     }
 
     @Transactional(readOnly = true)
-    public Map<Long, SortedSet<Event>> get(String key) throws ParseException, ParserException, IOException {
-        key = key.toUpperCase();
-        Map<Long, SortedSet<Event>> events = template.opsForValue().get(key);
+    public SortedMap<Long, SortedSet<Event>> get(String key) throws ParseException, ParserException, IOException {
+        SortedMap<Long, SortedSet<Event>> events = template.opsForValue().get(key);
         if (events == null) {
             events = dcuTimetableService.getTimetable(key);
             set(key, events);
@@ -41,10 +40,9 @@ public class EventService {
     }
 
     @Transactional
-    public void set(String key, Map<Long, SortedSet<Event>> value) {
-        key = key.toUpperCase();
+    public void set(String key, SortedMap<Long, SortedSet<Event>> value) {
         template.opsForValue().set(key, value);
-        template.expire(key, redisEntriesTTL, TimeUnit.SECONDS);
+        template.expire(key, redisEntryTTL, TimeUnit.SECONDS);
     }
 
 }

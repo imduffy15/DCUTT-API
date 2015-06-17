@@ -41,22 +41,26 @@ public class DcuTimetableService {
     }
 
     private static String getModuleCode(String data) {
-        Pattern pattern = Pattern.compile("(.*)[\\[\\(].*([lptsLPTS]).*");
-        Matcher matcher = pattern.matcher(data);
-        if (matcher.find()) return matcher.group(1);
-        throw new IllegalArgumentException();
-    }
-
-    private static Type getEventType(String data) {
-        Pattern pattern = Pattern.compile("(.*)[\\[\\(].*([lptsLPTS]).*");
+        data = data.replaceAll("\\s+", "");
+        Pattern pattern = Pattern.compile("^[^\\[\\(]*");
         Matcher matcher = pattern.matcher(data);
         if (matcher.find()) {
-            return Type.getInstanceFromTypeValue(matcher.group(2).charAt(0));
+            return matcher.group(0);
         }
         throw new IllegalArgumentException();
     }
 
-    public Map<Long, SortedSet<Event>> getTimetable(String courseCode) throws IOException, ParserException, ParseException {
+    private static Type getEventType(String data) {
+        data = data.replaceAll("\\s+", "");
+        Pattern pattern = Pattern.compile("^[^\\[\\(]*.*([lptsLPTS])[0-9].*");
+        Matcher matcher = pattern.matcher(data);
+        if (matcher.find()) {
+            return Type.getInstanceFromTypeValue(matcher.group(1).charAt(0));
+        }
+        return Type.UNKNOWN;
+    }
+
+    public SortedMap<Long, SortedSet<Event>> getTimetable(String courseCode) throws IOException, ParserException, ParseException {
         String timetableData = getTimetableData(courseCode);
         Calendar calendar = buildCalendar(timetableData);
         return generateEvents(calendar, courseCode);
@@ -71,8 +75,8 @@ public class DcuTimetableService {
         return calendarBuilder.build(new StringReader(data));
     }
 
-    private Map<Long, SortedSet<Event>> generateEvents(Calendar calendar, String courseCode) throws ParseException {
-        Map<Long, SortedSet<Event>> results = new HashMap<>();
+    private SortedMap<Long, SortedSet<Event>> generateEvents(Calendar calendar, String courseCode) throws ParseException {
+        SortedMap<Long, SortedSet<Event>> results = new TreeMap<>();
 
         ComponentList componentList = calendar.getComponents(COMPONENT_TYPE);
 
