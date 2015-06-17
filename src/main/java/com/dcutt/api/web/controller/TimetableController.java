@@ -1,4 +1,4 @@
-package com.dcutt.api.web;
+package com.dcutt.api.web.controller;
 
 import com.dcutt.api.service.EventService;
 import net.fortuna.ical4j.data.ParserException;

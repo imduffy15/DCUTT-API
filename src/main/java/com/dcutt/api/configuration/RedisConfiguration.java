@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.serializer.JacksonJsonRedisSerializer;
+import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 import redis.embedded.RedisServer;
 
@@ -23,7 +23,7 @@ public class RedisConfiguration {
 
     @PostConstruct
     public void setup() throws IOException {
-        if (redisServer == null) redisServer = new redis.embedded.RedisServer();
+        if (redisServer == null) redisServer = new RedisServer();
         redisServer.start();
     }
 
@@ -42,8 +42,8 @@ public class RedisConfiguration {
         final RedisTemplate<String, SortedMap<Long, SortedSet<Event>>> template = new RedisTemplate<>();
         template.setConnectionFactory(jedisConnectionFactory());
         template.setKeySerializer(new StringRedisSerializer());
-        template.setHashValueSerializer(new JacksonJsonRedisSerializer<>(TreeMap.class));
-        template.setValueSerializer(new JacksonJsonRedisSerializer<>(TreeMap.class));
+        template.setHashValueSerializer(new Jackson2JsonRedisSerializer<>(TreeMap.class));
+        template.setValueSerializer(new Jackson2JsonRedisSerializer<>(TreeMap.class));
         return template;
     }
 
