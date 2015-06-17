@@ -67,7 +67,7 @@ public class DcuTimetableService {
     }
 
     private String getTimetableData(String courseCode) {
-        String url = new StringBuilder(BASE_URL).append(courseCode).toString();
+        String url = BASE_URL + courseCode;
         return restTemplate.getForObject(url, String.class);
     }
 

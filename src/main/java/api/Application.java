@@ -11,8 +11,6 @@ import redis.embedded.RedisServer;
 @EnableAutoConfiguration
 public class Application {
 
-    private RedisServer redisServer;
-
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
     }

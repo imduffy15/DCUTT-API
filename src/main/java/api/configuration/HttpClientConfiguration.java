@@ -20,8 +20,7 @@ public class HttpClientConfiguration {
 
     @Bean
     public RestTemplate restTemplate() {
-        RestTemplate httpClient = new RestTemplate(clientHttpRequestFactory());
-        return httpClient;
+        return new RestTemplate(clientHttpRequestFactory());
     }
 
     private ClientHttpRequestFactory clientHttpRequestFactory() {

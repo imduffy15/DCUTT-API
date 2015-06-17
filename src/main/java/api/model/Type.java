@@ -10,7 +10,7 @@ public enum Type {
     SEMINAR('S'),
     UNKNOWN('U');
 
-    private static Map<Character, Type> characterTypeMap = new HashMap<>();
+    private static final Map<Character, Type> characterTypeMap = new HashMap<>();
 
     static {
         for (Type type : Type.values()) {
@@ -18,7 +18,7 @@ public enum Type {
         }
     }
 
-    private Character type;
+    private final Character type;
 
     Type(Character type) {
         this.type = Character.toUpperCase(type);

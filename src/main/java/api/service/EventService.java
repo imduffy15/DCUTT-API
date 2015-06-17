@@ -40,7 +40,7 @@ public class EventService {
     }
 
     @Transactional
-    public void set(String key, SortedMap<Long, SortedSet<Event>> value) {
+    private void set(String key, SortedMap<Long, SortedSet<Event>> value) {
         template.opsForValue().set(key, value);
         template.expire(key, redisEntryTTL, TimeUnit.SECONDS);
     }
