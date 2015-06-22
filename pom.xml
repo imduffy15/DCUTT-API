@@ -10,28 +10,32 @@
     </parent>
     <groupId>com.dcutt</groupId>
     <artifactId>api</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>api</name>
     <description>DCUTT API</description>
+    <scm>
+        <connection>scm:git:https://github.com/imduffy15/DCUTT-API.git</connection>
+        <tag>HEAD</tag>
+    </scm>
     <properties>
+        <ehcache.version>2.6.9</ehcache.version>
         <exception.handler.version>1.0.3</exception.handler.version>
         <ical4j.version>1.0.2</ical4j.version>
         <java.version>1.8</java.version>
         <lombok.version>1.14.8</lombok.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <redis.server.version>0.6</redis.server.version>
     </properties>
     <dependencies>
-        <dependency>
-            <groupId>com.github.kstyrc</groupId>
-            <artifactId>embedded-redis</artifactId>
-            <version>${redis.server.version}</version>
-        </dependency>
         <dependency>
             <groupId>cz.jirutka.spring</groupId>
             <artifactId>spring-rest-exception-handler</artifactId>
             <version>${exception.handler.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.ehcache</groupId>
+            <artifactId>ehcache-core</artifactId>
+            <version>${ehcache.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
@@ -49,8 +53,9 @@
             <version>${lombok.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-redis</artifactId>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context-support</artifactId>
+            <version>${spring.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -119,6 +124,18 @@
                     <sortPlugins>groupId,artifactId</sortPlugins>
                     <keepBlankLines>false</keepBlankLines>
                     <expandEmptyElements>false</expandEmptyElements>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>versions-maven-plugin</artifactId>
+                <version>2.1</version>
+            </plugin>
+            <plugin>
+                <artifactId>maven-scm-plugin</artifactId>
+                <version>1.8.1</version>
+                <configuration>
+                    <tag>${project.artifactId}-${project.version}</tag>
                 </configuration>
             </plugin>
             <plugin>

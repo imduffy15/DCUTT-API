@@ -10,6 +10,7 @@ import net.fortuna.ical4j.model.DateTime;
 import net.fortuna.ical4j.model.PropertyList;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -29,7 +30,7 @@ public class DcuTimetableService {
     private static final String START_DATE_KEY = "DTSTART";
     private static final String END_DATE_KEY = "DTEND";
     private static final String MODULE_DESCRIPTION_KEY = "DESCRIPTION";
-    private static final String BASE_URL = "http://ical.dcu.ie/gCal/default.aspx?PoSiCalOra&p1=";
+    private static final String BASE_URL = "http://localhost:9000/";
 
     private static final String LOCATION_SEPARATOR = ":";
     private static final String MODULE_SEPARATOR = "/";
@@ -63,7 +64,8 @@ public class DcuTimetableService {
         return Type.UNKNOWN;
     }
 
-    public SortedMap<Long, SortedSet<Event>> getTimetable(String courseCode) throws IOException, ParserException, ParseException {
+    @Cacheable("timetables")
+    public synchronized SortedMap<Long, SortedSet<Event>> getTimetable(String courseCode) throws IOException, ParserException, ParseException {
         String timetableData = getTimetableData(courseCode);
         Calendar calendar = buildCalendar(timetableData);
         return generateEvents(calendar, courseCode);

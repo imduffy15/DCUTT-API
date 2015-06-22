@@ -1,6 +1,6 @@
 package com.dcutt.api.web.controller;
 
-import com.dcutt.api.service.EventService;
+import com.dcutt.api.service.DcuTimetableService;
 import net.fortuna.ical4j.data.ParserException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,14 +19,14 @@ import java.util.Set;
 @RequestMapping("/timetable/{course_code}")
 public class TimetableController {
 
-    private EventService eventService;
+    private DcuTimetableService dcuTimetableService;
 
     @Value("#{'${dcutt.course.codes}'.split(',')}")
     private Set<String> courseCodes;
 
     @Autowired
-    public TimetableController(EventService eventService) {
-        this.eventService = eventService;
+    public TimetableController(DcuTimetableService dcuTimetableService) {
+        this.dcuTimetableService = dcuTimetableService;
     }
 
     @RequestMapping(
@@ -37,6 +37,6 @@ public class TimetableController {
     ) throws ParseException, ParserException, IOException {
         courseCode = courseCode.toUpperCase();
         if (!courseCodes.contains(courseCode)) throw new IllegalArgumentException(courseCode);
-        return new ResponseEntity<>(eventService.get(courseCode), HttpStatus.OK);
+        return new ResponseEntity<>(dcuTimetableService.getTimetable(courseCode), HttpStatus.OK);
     }
 }
