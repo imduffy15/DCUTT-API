@@ -10,6 +10,7 @@ import net.fortuna.ical4j.model.DateTime;
 import net.fortuna.ical4j.model.PropertyList;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -30,7 +31,9 @@ public class DcuTimetableService {
     private static final String START_DATE_KEY = "DTSTART";
     private static final String END_DATE_KEY = "DTEND";
     private static final String MODULE_DESCRIPTION_KEY = "DESCRIPTION";
-    private static final String BASE_URL = "http://localhost:9000/";
+
+    @Value("${dcutt.source.url}")
+    private String BASE_URL;
 
     private static final String LOCATION_SEPARATOR = ":";
     private static final String MODULE_SEPARATOR = "/";
