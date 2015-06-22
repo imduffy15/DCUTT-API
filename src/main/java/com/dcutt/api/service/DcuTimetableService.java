@@ -32,11 +32,11 @@ public class DcuTimetableService {
     private static final String END_DATE_KEY = "DTEND";
     private static final String MODULE_DESCRIPTION_KEY = "DESCRIPTION";
 
-    @Value("${dcutt.source.url}")
-    private String BASE_URL;
-
     private static final String LOCATION_SEPARATOR = ":";
     private static final String MODULE_SEPARATOR = "/";
+
+    @Value("${dcutt.source.url}")
+    private String BASE_URL;
 
     private CalendarBuilder calendarBuilder;
     private RestTemplate restTemplate;
