@@ -8,7 +8,7 @@ import java.util.Properties;
 
 public class BlockingCacheDecoratorFactory extends CacheDecoratorFactory {
 
-    private static final int TIMEOUT_MILLIS = 1000;
+    private static final int TIMEOUT_MILLIS = 20000;
 
     @Override
     public Ehcache createDecoratedEhcache(final Ehcache cache, final Properties properties) {
