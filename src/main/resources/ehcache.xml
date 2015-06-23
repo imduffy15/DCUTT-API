@@ -5,18 +5,19 @@
     <diskStore path="java.io.tmpdir/DCUTT"/>
 
     <defaultCache
-            maxElementsInMemory="10"
+            maxElementsInMemory="1000"
             eternal="false"
             timeToIdleSeconds="86400"
             timeToLiveSeconds="86400"
             overflowToDisk="true"
             maxElementsOnDisk="10000000"
-            diskPersistent="false"
+            diskPersistent="true"
             diskExpiryThreadIntervalSeconds="120"
             memoryStoreEvictionPolicy="LRU"
             />
 
     <cache name='timetables' maxBytesLocalHeap="50m">
+        <sizeOfPolicy maxDepth="10000000" maxDepthExceededBehavior="continue"/>
         <cacheDecoratorFactory class="com.dcutt.api.configuration.cache.BlockingCacheDecoratorFactory"/>
     </cache>
 
