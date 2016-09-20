@@ -80,6 +80,7 @@ public class DcuTimetableService {
     }
 
     private Calendar buildCalendar(String data) throws IOException, ParserException {
+        data = data.replaceAll("(?m)^:", "");
         return calendarBuilder.build(new StringReader(data));
     }
 
