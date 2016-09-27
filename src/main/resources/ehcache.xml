@@ -14,7 +14,7 @@
             diskPersistent="true"
             diskExpiryThreadIntervalSeconds="120"
             memoryStoreEvictionPolicy="LRU"
-            />
+    />
 
     <cache name='timetables' maxBytesLocalHeap="50m">
         <sizeOfPolicy maxDepth="10000000" maxDepthExceededBehavior="continue"/>
